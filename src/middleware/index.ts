@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import HttpStatusCode from "http-status-codes";
 
-export default class HttpException extends Error {
+export class HttpException extends Error {
   constructor(public statusCode: number, public message: string) {
     super();
   }
