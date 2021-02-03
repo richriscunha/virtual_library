@@ -11,7 +11,8 @@ class BookController {
    */
   public index(req: Request, res: Response, next: NextFunction) {
     try {
-      throw new HttpException(501, "Not implemented method");
+      const books = BookService.getAllBooks();
+      res.status(httpStatusCode.OK).json({ books });
     } catch (error) {
       next(error);
     }

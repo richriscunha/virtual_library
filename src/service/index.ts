@@ -13,6 +13,10 @@ class BookService {
     BookRepository.create(title);
   }
 
+  public getAllBooks(): string[] {
+    return BookRepository.all();
+  }
+
   public removeBook(title: string): void {
     if (!BookRepository.exists(title)) {
       throw new HttpException(HttpStatusCode.NOT_FOUND, httpErrorMessages.notFound);
@@ -34,6 +38,8 @@ class BookService {
     if (BookRepository.exists(newTitle)) {
       throw new HttpException(HttpStatusCode.CONFLICT, httpErrorMessages.exists);
     }
+
+    BookRepository.update(oldTitle, newTitle);
   }
 }
 
