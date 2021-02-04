@@ -2,44 +2,76 @@ import HttpStatusCode from "http-status-codes";
 
 import { httpErrorMessages } from "../constants";
 import { HttpException } from "../middleware";
+import repository from "../repository";
 import BookRepository from "../repository";
 
 class BookService {
   public addNewBook(title: string): void {
-    if (BookRepository.exists(title)) {
-      throw new HttpException(HttpStatusCode.CONFLICT, httpErrorMessages.exists);
+    try {
+      BookRepository.create(title);
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-
-    BookRepository.create(title);
   }
 
-  public getAllBooks(): string[] {
-    return BookRepository.all();
+  private generatePersistanceResponse(startTime: number, results: [string, number][]): {} {
+    let response = {};
+
+    results.forEach((result) => {
+      const [title, time] = result;
+      response = { ...response, [title]: time - startTime };
+    });
+
+    return response;
+  }
+
+  public async getAllBooks() {
+    const books = BookRepository.all();
+  }
+
+  public async persistAllBooks(): Promise<{}> {
+    const now = Date.now();
+
+    const books = BookRepository.all();
+
+    if (books.length === 0) {
+      return {};
+    }
+
+    const booksToSave = books.map((book) => this.persistBook(book));
+
+    const results = await Promise.all(booksToSave);
+
+    const response = this.generatePersistanceResponse(now, results);
+
+    return response;
+  }
+
+  public persistBook(title: string): Promise<[string, number]> {
+    const delay = Math.random() * title.length;
+
+    return new Promise((resolve) => {
+      setInterval(() => resolve([title, Date.now()]), delay);
+    });
   }
 
   public removeBook(title: string): void {
-    if (!BookRepository.exists(title)) {
-      throw new HttpException(HttpStatusCode.NOT_FOUND, httpErrorMessages.notFound);
+    try {
+      BookRepository.delete(title);
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-
-    BookRepository.delete(title);
   }
 
   public updateBook(oldTitle: string, newTitle: string) {
-    // This method updates the name of an existing book. Errors should be thrown for attempts to update non-existent books,
-    // or if the updated name would match the name of another book already in the library, to avoid confusion (or an existential book crisis.)
-    // The index of the book should stay the same after its name has been updated. The request body should contain two parameters, “original_book”,
-    // the initial name of the book to be updated, and “new_book”, the new name of said book.
-
-    if (!BookRepository.exists(oldTitle)) {
-      throw new HttpException(HttpStatusCode.NOT_FOUND, httpErrorMessages.notFound);
+    try {
+      BookRepository.update(oldTitle, newTitle);
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-
-    if (BookRepository.exists(newTitle)) {
-      throw new HttpException(HttpStatusCode.CONFLICT, httpErrorMessages.exists);
-    }
-
-    BookRepository.update(oldTitle, newTitle);
   }
 }
 

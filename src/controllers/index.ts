@@ -42,11 +42,26 @@ class BookController {
   }
 
   /**
-   * show
+   * PUT /api/books
+   * This method should simulate asynchronous persistence of the current book list to a database (no actual saving of the book list to a database is required.)
+   * A function called “saveItemOnDatabase (name, callback)” should be defined such that the first parameter is the name of the book to be saved and the second is a callback function.
+   * This function should be called for every book in the list separately. To simulate a database delay for every write operation, you can use the native JavaScript “setInterval”
+   * function in combination with “Math.random()” and the book name string’s “length” property. If you like, you can write individual files for each book using the
+   * NodeJS File System module, but only asynchronous methods are accepted as part of the solution. The request main thread should wait for the callback responses of every
+   * call to “saveItemOnDatabase”, and it should be responsible for the synchronization of these asynchronous events. After all the books are “saved to the database”, a response should
+   * be sent to the PUT request. The response should contain a JSON object where each key is a book name, and each value is an associated integer value that is the number of milliseconds
+   * elapsed from the beginning of the main request until the moment the callback related to that particular key/book was called. As an example, please see the following sample response:
+   * {
+   *    “1984”: 233,
+   *    “A Christmas Carol”: 506,
+   *    “Moby Dick”: 708,
+   *    “The Hitchhiker’s Guide to the Galaxy”: 1476, “The Lord of the Rings”: 1091
+   * }
    */
-  public show(req: Request, res: Response, next: NextFunction) {
+  public async persist(req: Request, res: Response, next: NextFunction) {
     try {
-      throw new HttpException(501, "Not implemented method");
+      const response = await BookService.persistAllBooks();
+      res.status(httpStatusCode.OK).json(response);
     } catch (error) {
       next(error);
     }

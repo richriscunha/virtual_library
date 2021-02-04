@@ -8,6 +8,6 @@ router.post("/", BookController.store);
 router.delete("/:title", BookController.destroy);
 router.patch("/", BookController.update);
 router.get("/", BookController.index);
-router.put("/", BookController.show);
+router.put("/", BookController.persist);
 
 export default router;
