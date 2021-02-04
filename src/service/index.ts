@@ -1,8 +1,3 @@
-import HttpStatusCode from "http-status-codes";
-
-import { httpErrorMessages } from "../constants";
-import { HttpException } from "../middleware";
-import repository from "../repository";
 import BookRepository from "../repository";
 
 class BookService {
@@ -52,7 +47,10 @@ class BookService {
     const delay = Math.random() * title.length;
 
     return new Promise((resolve) => {
-      setInterval(() => resolve([title, Date.now()]), delay);
+      setInterval(() => {
+        // Persistance code goes here...
+        resolve([title, Date.now()]);
+      }, delay);
     });
   }
 
