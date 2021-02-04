@@ -1,3 +1,4 @@
+import { isEmpty } from "../utils";
 import BookRepository from "../repository";
 
 class BookService {
@@ -5,7 +6,6 @@ class BookService {
     try {
       BookRepository.create(title);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -22,7 +22,31 @@ class BookService {
   }
 
   public async getAllBooks() {
+    let list = "";
     const books = BookRepository.all();
+
+    return new Promise((resolve) => {
+      if (isEmpty(books)) {
+        resolve(list);
+      }
+
+      if (books.length === 1) {
+        list = books[0];
+        resolve(list);
+      }
+
+      const getBookList = (titles: string[], delimiter = ",") => {
+        if (titles.length === 1) {
+          list = list + titles[0];
+          resolve(list);
+        } else {
+          list = list + titles[0] + delimiter;
+          getBookList(titles.slice(1));
+        }
+      };
+
+      getBookList(books);
+    });
   }
 
   public async persistAllBooks(): Promise<{}> {
@@ -30,7 +54,7 @@ class BookService {
 
     const books = BookRepository.all();
 
-    if (books.length === 0) {
+    if (isEmpty(books)) {
       return {};
     }
 
@@ -58,7 +82,6 @@ class BookService {
     try {
       BookRepository.delete(title);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -67,7 +90,6 @@ class BookService {
     try {
       BookRepository.update(oldTitle, newTitle);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }

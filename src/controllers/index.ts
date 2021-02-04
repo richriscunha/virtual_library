@@ -7,13 +7,14 @@ import BookService from "../service";
 
 class BookController {
   /**
-   * name
+   * GET /api/books
    */
-  public index(req: Request, res: Response, next: NextFunction) {
+  public async index(req: Request, res: Response, next: NextFunction) {
     try {
-      const books = BookService.getAllBooks();
+      const books = await BookService.getAllBooks();
       res.status(httpStatusCode.OK).json({ books });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   }
@@ -37,6 +38,7 @@ class BookController {
 
       res.status(httpStatusCode.CREATED).json({ title });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   }
@@ -63,6 +65,7 @@ class BookController {
       const response = await BookService.persistAllBooks();
       res.status(httpStatusCode.OK).json(response);
     } catch (error) {
+      console.error(error);
       next(error);
     }
   }
@@ -94,6 +97,7 @@ class BookController {
         new_book,
       });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   }
@@ -116,6 +120,7 @@ class BookController {
 
       res.sendStatus(httpStatusCode.NO_CONTENT);
     } catch (error) {
+      console.error(error);
       next(error);
     }
   }
