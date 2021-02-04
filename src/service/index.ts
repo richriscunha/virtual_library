@@ -2,9 +2,9 @@ import { isEmpty } from "../utils";
 import BookRepository from "../repository";
 
 class BookService {
-  public addNewBook(title: string): void {
+  public addNewBook(book: string): void {
     try {
-      BookRepository.create(title);
+      BookRepository.create(book);
     } catch (error) {
       throw error;
     }
@@ -78,17 +78,17 @@ class BookService {
     });
   }
 
-  public removeBook(title: string): void {
+  public removeBook(book: string): void {
     try {
-      BookRepository.delete(title);
+      BookRepository.delete(book);
     } catch (error) {
       throw error;
     }
   }
 
-  public updateBook(oldTitle: string, newTitle: string) {
+  public updateBook(originalBook: string, newBook: string) {
     try {
-      BookRepository.update(oldTitle, newTitle);
+      BookRepository.update(originalBook, newBook);
     } catch (error) {
       throw error;
     }

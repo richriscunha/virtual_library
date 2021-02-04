@@ -5,7 +5,7 @@ import BookController from "../controllers/index";
 const router: Router = express.Router();
 
 router.post("/", BookController.store);
-router.delete("/:title", BookController.destroy);
+router.delete("/:book", BookController.destroy);
 router.patch("/", BookController.update);
 router.get("/", BookController.index);
 router.put("/", BookController.persist);

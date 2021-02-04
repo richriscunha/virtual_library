@@ -14,41 +14,41 @@ class BookRepository {
     return this.books;
   }
 
-  public create(title: string): void {
-    if (this.exists(title)) {
+  public create(book: string): void {
+    if (this.exists(book)) {
       throw new HttpException(HttpStatusCode.CONFLICT, httpErrorMessages.exists);
     }
 
-    this.books = [...this.books, title];
+    this.books = [...this.books, book];
   }
 
-  public delete(title: string): void {
-    if (!this.exists(title)) {
+  public delete(book: string): void {
+    if (!this.exists(book)) {
       throw new HttpException(HttpStatusCode.NOT_FOUND, httpErrorMessages.notFound);
     }
 
-    this.books = [...this.books.filter((book) => book !== title)];
+    this.books = [...this.books.filter((title) => title !== book)];
   }
 
-  public exists(title: string): boolean {
-    return !!this.books.includes(title);
+  public exists(book: string): boolean {
+    return !!this.books.includes(book);
   }
 
-  public update(oldTitle: string, newTitle: string): void {
-    if (!this.exists(oldTitle)) {
+  public update(originalBook: string, newBook: string): void {
+    if (!this.exists(originalBook)) {
       throw new HttpException(HttpStatusCode.NOT_FOUND, httpErrorMessages.notFound);
     }
 
-    if (this.exists(newTitle)) {
+    if (this.exists(newBook)) {
       throw new HttpException(HttpStatusCode.CONFLICT, httpErrorMessages.exists);
     }
 
     this.books = this.books.map((title) => {
-      if (title === oldTitle) {
-        return newTitle;
+      if (title === originalBook) {
+        return newBook;
       }
 
-      return oldTitle;
+      return originalBook;
     });
   }
 }
