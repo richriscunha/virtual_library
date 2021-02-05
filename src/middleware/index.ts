@@ -7,6 +7,7 @@ import {
   NOT_FOUND_STATUS,
   UNKNOWN_SERVER_ERROR_MESSAGE,
 } from "../constants";
+
 export class HttpException extends Error {
   constructor(public statusCode: number, public message: string) {
     super();
