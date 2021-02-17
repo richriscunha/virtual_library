@@ -1,17 +1,19 @@
 {
   "name": "pippin_virutal_library",
   "scripts": {
-    "serve:dev": "nodemon",
+    "start": "nodemon",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-status-codes": "^2.1.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
     "@types/node": "^14.14.22",
     "@types/supertest": "^2.0.10",

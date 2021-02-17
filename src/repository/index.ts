@@ -48,7 +48,7 @@ class BookRepository {
         return newBook;
       }
 
-      return originalBook;
+      return title;
     });
   }
 }
